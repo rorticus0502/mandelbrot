@@ -1,32 +1,42 @@
 package com.projects.fun.screen.mandelbrot;
 
+import java.math.BigDecimal;
+
 public class ComplexNumber {
 
   private static final int I_SQUARED = -1;
-  private int real;
-  private int imaginary;
+  private double real;
+  private double imaginary;
 
-  public ComplexNumber(int real, int imaginary) {
+  public ComplexNumber(double real, double imaginary) {
     this.real = real;
     this.imaginary = imaginary;
   }
 
   public ComplexNumber squared() {
-    int firstInEach = real * real;
-    int lastInEach = imaginary * imaginary * I_SQUARED;
+    double firstInEach = real * real;
+    double lastInEach = imaginary * imaginary * I_SQUARED;
 
-    int realPart = firstInEach + lastInEach;
+    double realPart = firstInEach + lastInEach;
 
-    int imaginaryPart = 2 * real * imaginary;
+    double imaginaryPart = 2 * real * imaginary;
 
     return new ComplexNumber(realPart, imaginaryPart);
   }
 
-  public int getReal() {
+  public double size() {
+    return Math.sqrt((real * real) + (imaginary * imaginary));
+  }
+
+  public double getReal() {
     return real;
   }
 
-  public int getImaginary() {
+  public double getImaginary() {
     return imaginary;
+  }
+
+  public ComplexNumber add(ComplexNumber c) {
+    return new ComplexNumber(real + c.getReal(), imaginary + c.getImaginary());
   }
 }
