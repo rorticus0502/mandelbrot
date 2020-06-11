@@ -1,7 +1,6 @@
 package com.projects.fun.screen.mandelbrot;
 
 import static java.awt.Color.BLACK;
-import static java.awt.Color.BLUE;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,13 +11,25 @@ import javax.swing.JFrame;
 public class MandelbrotApplication extends JFrame {
 
   private static Map<Integer, Color> colorMap = new HashMap<>();
+  private static final int MAX_ITERATIONS = 10000;
+  private static final double DIVERGENCE_THRESHOLD = 1000d;
+
+  private int screenWidth = 1200;
+  private int screenHeight = 900;
+
+  private double realMin = -2d;
+  private double realMax = 1d;
+  private double imaginaryMin = -1d;
+  private double imaginaryMax = 1d;
 
   public static void main(String[] args) {
+
+    colorMap.put(MAX_ITERATIONS, BLACK);
 
     MandelbrotApplication mandelbrotApplication = new MandelbrotApplication();
 
     mandelbrotApplication.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    mandelbrotApplication.setSize(800, 800);
+    mandelbrotApplication.setSize(mandelbrotApplication.screenWidth, mandelbrotApplication.screenHeight);
 
     mandelbrotApplication.setVisible(true);
   }
@@ -26,10 +37,10 @@ public class MandelbrotApplication extends JFrame {
   @Override
   public void paint(Graphics graphics) {
 
-    for (int w = 0; w < 800; w++) {
-      for (int h = 0; h < 800; h++) {
+    for (int x = 0; x < screenWidth; x++) {
+      for (int h = 0; h < screenHeight; h++) {
 
-        double real = convertWidthToReal(w);
+        double real = convertWidthToReal(x);
         double imaginary = convertHeightToImaginary(h);
         ComplexNumber c = new ComplexNumber(real, imaginary);
 
@@ -37,7 +48,7 @@ public class MandelbrotApplication extends JFrame {
 
         graphics.setColor(color);
 
-        graphics.fillRect(w, h, 1, 1);
+        graphics.fillRect(x, h, 1, 1);
 
       }
     }
@@ -60,7 +71,7 @@ public class MandelbrotApplication extends JFrame {
     double currentSize = 0d;
     ComplexNumber zN = new ComplexNumber(0d, 0d);
 
-    while (currentSize < 100d && counter < 10000) {
+    while (currentSize < DIVERGENCE_THRESHOLD && counter < MAX_ITERATIONS) {
 
       counter++;
       ComplexNumber zNPlusOne = zN.squared().add(c);
@@ -72,14 +83,22 @@ public class MandelbrotApplication extends JFrame {
 
   }
 
-  private double convertWidthToReal(int width) {
-    return (Integer.valueOf(width).doubleValue() / 200.0d) - 2.0d;
+  private double convertWidthToReal(int xPosition) {
+    return (Integer.valueOf(xPosition).doubleValue() / calculateRealNumerator()) + realMin;
   }
 
-  private double convertHeightToImaginary(int height) {
+  private double calculateRealNumerator() {
+    return Integer.valueOf(screenWidth).doubleValue() / (realMax - realMin);
+  }
 
-    int verticalPosition = 800 - height;
-    return (Integer.valueOf(verticalPosition).doubleValue() / 200.0d) - 2.0d;
+  private double convertHeightToImaginary(int depthOnScreen) {
+
+    int yPosition = screenHeight - depthOnScreen;
+    return (Integer.valueOf(yPosition).doubleValue() / calculateImaginaryNumerator()) + imaginaryMin;
+  }
+
+  private double calculateImaginaryNumerator() {
+    return Integer.valueOf(screenHeight).doubleValue() / (imaginaryMax - imaginaryMin);
   }
 
 }
