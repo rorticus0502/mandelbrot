@@ -12,15 +12,15 @@ public class MandelbrotApplication extends JFrame {
 
   private static Map<Integer, Color> colorMap = new HashMap<>();
   private static final int MAX_ITERATIONS = 10000;
-  private static final double DIVERGENCE_THRESHOLD = 1000d;
+  private static final double DIVERGENCE_THRESHOLD = 10000000d;
 
   private int screenWidth = 1200;
   private int screenHeight = 900;
 
-  private double realMin = -2d;
-  private double realMax = 1d;
-  private double imaginaryMin = -1d;
-  private double imaginaryMax = 1d;
+  private double realMin = -2.0d;
+  private double realMax = 1.0d;
+  private double imaginaryMin = -1.5d;
+  private double imaginaryMax = 1.5d;
 
   public static void main(String[] args) {
 
@@ -52,35 +52,27 @@ public class MandelbrotApplication extends JFrame {
 
       }
     }
-    System.out.println("Done");
-
   }
 
   private Color generateColor(int orbit) {
 
     int randomColorKey = Double.valueOf(Math.random() * Integer.MAX_VALUE).intValue();
-
     return colorMap.computeIfAbsent(orbit, (key) -> new Color(randomColorKey));
   }
 
   private int escapeVelocity(ComplexNumber c) {
 
-
     int counter = 0;
 
-    double currentSize = 0d;
     ComplexNumber zN = new ComplexNumber(0d, 0d);
 
-    while (currentSize < DIVERGENCE_THRESHOLD && counter < MAX_ITERATIONS) {
+    while (zN.size() < DIVERGENCE_THRESHOLD && counter < MAX_ITERATIONS) {
 
       counter++;
-      ComplexNumber zNPlusOne = zN.squared().add(c);
-      currentSize = zNPlusOne.size();
-      zN = zNPlusOne;
+      zN = zN.squared().add(c);
     }
 
     return counter;
-
   }
 
   private double convertWidthToReal(int xPosition) {
