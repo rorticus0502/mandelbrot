@@ -4,15 +4,19 @@ import static java.awt.Color.BLACK;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JFrame;
 
 public class MandelbrotApplication extends JFrame {
 
+  private static final MathContext PRECISION = new MathContext(4, RoundingMode.HALF_DOWN);
   private static Map<Integer, Color> colorMap = new HashMap<>();
-  private static final int MAX_ITERATIONS = 10000;
-  private static final double DIVERGENCE_THRESHOLD = 10000000d;
+  private static final int MAX_ITERATIONS = 1000;
+  private static final double DIVERGENCE_THRESHOLD = 100000d;
 
   private int screenWidth = 1200;
   private int screenHeight = 900;
@@ -31,11 +35,16 @@ public class MandelbrotApplication extends JFrame {
     mandelbrotApplication.setDefaultCloseOperation(EXIT_ON_CLOSE);
     mandelbrotApplication.setSize(mandelbrotApplication.screenWidth, mandelbrotApplication.screenHeight);
 
+    mandelbrotApplication.addMouseListener(new ZoomController(mandelbrotApplication));
+
     mandelbrotApplication.setVisible(true);
   }
 
   @Override
   public void paint(Graphics graphics) {
+
+    System.out.println(String.format("real min %.2f real max %.2f imaginary min %.2f imaginary max %.2f", realMin, realMax, imaginaryMin, imaginaryMax));
+
 
     for (int x = 0; x < screenWidth; x++) {
       for (int h = 0; h < screenHeight; h++) {
@@ -91,6 +100,36 @@ public class MandelbrotApplication extends JFrame {
 
   private double calculateImaginaryNumerator() {
     return Integer.valueOf(screenHeight).doubleValue() / (imaginaryMax - imaginaryMin);
+  }
+
+  public void updateRegion(double realMin, double realMax, double imaginaryMin, double imaginaryMax) {
+    this.realMin = realMin;
+    this.realMax = realMax;
+    this.imaginaryMin = imaginaryMin;
+    this.imaginaryMax = imaginaryMax;
+
+    repaint();
+  }
+
+  public double convertXPositionToRealValue(int selectedX) {
+
+    double screenRatio =
+        Integer.valueOf(selectedX).doubleValue() / Integer.valueOf(screenWidth).doubleValue();
+
+    double realUnadjustedForOrigin = screenRatio * (realMax - realMin);
+
+    return realMin + realUnadjustedForOrigin;
+  }
+
+  public double convertYPositionToImaginaryValue(int selectedY) {
+
+    double screenRatio =
+        Integer.valueOf(screenHeight - selectedY).doubleValue() / Integer.valueOf(screenHeight)
+            .doubleValue();
+
+    double imaginaryUnadjustedForOrigin = screenRatio * (imaginaryMax - imaginaryMin);
+
+    return imaginaryMin + imaginaryUnadjustedForOrigin;
   }
 
 }
