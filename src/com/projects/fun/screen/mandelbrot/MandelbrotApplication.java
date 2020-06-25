@@ -15,8 +15,8 @@ public class MandelbrotApplication extends JFrame {
 
   private static final MathContext PRECISION = new MathContext(4, RoundingMode.HALF_DOWN);
   private static Map<Integer, Color> colorMap = new HashMap<>();
-  private static final int MAX_ITERATIONS = 1000;
-  private static final double DIVERGENCE_THRESHOLD = 100000d;
+  private static final int MAX_ITERATIONS = 10000;
+  private static final double DIVERGENCE_THRESHOLD = 10000000d;
 
   private int screenWidth = 1200;
   private int screenHeight = 900;
