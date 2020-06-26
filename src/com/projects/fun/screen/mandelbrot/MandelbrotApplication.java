@@ -1,6 +1,7 @@
 package com.projects.fun.screen.mandelbrot;
 
 import static java.awt.Color.BLACK;
+import static java.awt.Color.ORANGE;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,8 +16,8 @@ public class MandelbrotApplication extends JFrame {
 
   private static final MathContext PRECISION = new MathContext(4, RoundingMode.HALF_DOWN);
   private static Map<Integer, Color> colorMap = new HashMap<>();
-  private static final int MAX_ITERATIONS = 10000;
-  private static final double DIVERGENCE_THRESHOLD = 10000000d;
+  private static final int MAX_ITERATIONS = 250;
+  private static final double DIVERGENCE_THRESHOLD = 100000d;
 
   private int screenWidth = 1200;
   private int screenHeight = 900;
@@ -38,6 +39,10 @@ public class MandelbrotApplication extends JFrame {
     mandelbrotApplication.addMouseListener(new ZoomController(mandelbrotApplication));
 
     mandelbrotApplication.setVisible(true);
+
+    System.out.println(String.format("Black is r %d g %d b %d", BLACK.getRed(), BLACK.getGreen(), BLACK.getBlue()));
+    System.out.println(String.format("Orange is r %d g %d b %d", ORANGE.getRed(), ORANGE.getGreen(), ORANGE.getBlue()));
+
   }
 
   @Override
@@ -65,8 +70,17 @@ public class MandelbrotApplication extends JFrame {
 
   private Color generateColor(int orbit) {
 
-    int randomColorKey = Double.valueOf(Math.random() * Integer.MAX_VALUE).intValue();
-    return colorMap.computeIfAbsent(orbit, (key) -> new Color(randomColorKey));
+    if (orbit == MAX_ITERATIONS) {
+      return BLACK;
+    }
+
+    int redPart = orbit;
+    int greenPart = orbit / 2;
+    int bluePart = 0;
+
+    return new Color(redPart, greenPart, bluePart);
+
+
   }
 
   private int escapeVelocity(ComplexNumber c) {
