@@ -14,10 +14,9 @@ import javax.swing.JFrame;
 
 public class MandelbrotApplication extends JFrame {
 
-  private static final MathContext PRECISION = new MathContext(4, RoundingMode.HALF_DOWN);
   private static Map<Integer, Color> colorMap = new HashMap<>();
-  private static final int MAX_ITERATIONS = 250;
-  private static final double DIVERGENCE_THRESHOLD = 100000d;
+  private static final int MAX_ITERATIONS = 10000;
+  private static final double DIVERGENCE_THRESHOLD = 10000000d;
 
   private int screenWidth = 1200;
   private int screenHeight = 900;
@@ -74,8 +73,10 @@ public class MandelbrotApplication extends JFrame {
       return BLACK;
     }
 
-    int redPart = orbit;
-    int greenPart = orbit / 2;
+    double colorFactor = Math.abs(254d * (Math.sin(Integer.valueOf(orbit).doubleValue() / 50d)));
+
+    int redPart = Double.valueOf(colorFactor).intValue();
+    int greenPart = Double.valueOf(colorFactor / 2).intValue();
     int bluePart = 0;
 
     return new Color(redPart, greenPart, bluePart);
