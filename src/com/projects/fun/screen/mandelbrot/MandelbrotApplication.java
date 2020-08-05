@@ -73,13 +73,25 @@ public class MandelbrotApplication extends JFrame {
       return BLACK;
     }
 
-    double colorFactor = Math.abs(254d * (Math.sin(Integer.valueOf(orbit).doubleValue() / 50d)));
+    double colorFactor = 254d * (Math.sin(Integer.valueOf(orbit).doubleValue() / 50d));
 
-    int redPart = Double.valueOf(colorFactor).intValue();
-    int greenPart = Double.valueOf(colorFactor / 2).intValue();
-    int bluePart = 0;
+    if (colorFactor > 0d) {
+
+      int redPart = Double.valueOf(colorFactor).intValue();
+      int greenPart = Double.valueOf(colorFactor / 2).intValue();
+      int bluePart = 0;
+
+      return new Color(redPart, greenPart, bluePart);
+    }
+
+    colorFactor = Math.abs(colorFactor);
+
+    int bluePart = Double.valueOf(colorFactor).intValue();
+    int greenPart = Double.valueOf(colorFactor / 4).intValue();
+    int redPart = 0;
 
     return new Color(redPart, greenPart, bluePart);
+
 
 
   }
