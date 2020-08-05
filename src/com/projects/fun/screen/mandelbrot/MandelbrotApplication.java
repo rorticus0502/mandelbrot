@@ -38,10 +38,6 @@ public class MandelbrotApplication extends JFrame {
     mandelbrotApplication.addMouseListener(new ZoomController(mandelbrotApplication));
 
     mandelbrotApplication.setVisible(true);
-
-    System.out.println(String.format("Black is r %d g %d b %d", BLACK.getRed(), BLACK.getGreen(), BLACK.getBlue()));
-    System.out.println(String.format("Orange is r %d g %d b %d", ORANGE.getRed(), ORANGE.getGreen(), ORANGE.getBlue()));
-
   }
 
   @Override
