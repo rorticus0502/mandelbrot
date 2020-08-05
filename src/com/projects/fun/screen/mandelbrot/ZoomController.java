@@ -5,14 +5,14 @@ import java.awt.event.MouseEvent;
 
 public class ZoomController extends MouseAdapter {
 
-  private MandelbrotApplication display;
+  private MandelbrotScreen display;
 
   private double newRealMin;
   private double newRealMax;
   private double newImaginaryMin;
   private double newImaginaryMax;
 
-  public ZoomController(MandelbrotApplication display) {
+  public ZoomController(MandelbrotScreen display) {
     this.display = display;
   }
 
