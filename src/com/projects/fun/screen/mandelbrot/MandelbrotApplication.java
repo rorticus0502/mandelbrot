@@ -1,13 +1,9 @@
 package com.projects.fun.screen.mandelbrot;
 
 import static java.awt.Color.BLACK;
-import static java.awt.Color.ORANGE;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JFrame;
@@ -42,9 +38,6 @@ public class MandelbrotApplication extends JFrame {
 
   @Override
   public void paint(Graphics graphics) {
-
-    System.out.println(String.format("real min %.2f real max %.2f imaginary min %.2f imaginary max %.2f", realMin, realMax, imaginaryMin, imaginaryMax));
-
 
     for (int x = 0; x < screenWidth; x++) {
       for (int h = 0; h < screenHeight; h++) {
