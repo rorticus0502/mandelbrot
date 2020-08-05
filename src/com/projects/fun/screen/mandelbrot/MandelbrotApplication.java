@@ -1,6 +1,7 @@
 package com.projects.fun.screen.mandelbrot;
 
 import static java.awt.Color.BLACK;
+import static java.awt.Color.ORANGE;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,10 +14,9 @@ import javax.swing.JFrame;
 
 public class MandelbrotApplication extends JFrame {
 
-  private static final MathContext PRECISION = new MathContext(4, RoundingMode.HALF_DOWN);
   private static Map<Integer, Color> colorMap = new HashMap<>();
-  private static final int MAX_ITERATIONS = 1000;
-  private static final double DIVERGENCE_THRESHOLD = 100000d;
+  private static final int MAX_ITERATIONS = 10000;
+  private static final double DIVERGENCE_THRESHOLD = 10000000d;
 
   private int screenWidth = 1200;
   private int screenHeight = 900;
@@ -65,8 +65,31 @@ public class MandelbrotApplication extends JFrame {
 
   private Color generateColor(int orbit) {
 
-    int randomColorKey = Double.valueOf(Math.random() * Integer.MAX_VALUE).intValue();
-    return colorMap.computeIfAbsent(orbit, (key) -> new Color(randomColorKey));
+    if (orbit == MAX_ITERATIONS) {
+      return BLACK;
+    }
+
+    double colorFactor = 254d * (Math.sin(Integer.valueOf(orbit).doubleValue() / 50d));
+
+    if (colorFactor > 0d) {
+
+      int redPart = Double.valueOf(colorFactor).intValue();
+      int greenPart = Double.valueOf(colorFactor / 2).intValue();
+      int bluePart = 0;
+
+      return new Color(redPart, greenPart, bluePart);
+    }
+
+    colorFactor = Math.abs(colorFactor);
+
+    int bluePart = Double.valueOf(colorFactor).intValue();
+    int greenPart = Double.valueOf(colorFactor / 4).intValue();
+    int redPart = 0;
+
+    return new Color(redPart, greenPart, bluePart);
+
+
+
   }
 
   private int escapeVelocity(ComplexNumber c) {
